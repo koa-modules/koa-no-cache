@@ -6,7 +6,8 @@ var serve = require('koa-static-cache'),
   equal = assert.deepEqual,
   noCache = require('..'),
   koa = require('koa'),
-  app = koa();
+  app = koa(),
+  globalNoCahceApp = koa();
 
 describe('# koa-no-cache', function() {
   app.use(noCache({
@@ -15,6 +16,14 @@ describe('# koa-no-cache', function() {
   }));
   app.use(serve('test'));
   app.use(function * () {
+    this.body = 'test';
+  });
+
+  globalNoCahceApp.use(noCache({
+    global: true
+  }));
+  globalNoCahceApp.use(serve('test'));
+  globalNoCahceApp.use(function * () {
     this.body = 'test';
   });
 
@@ -67,6 +76,28 @@ describe('# koa-no-cache', function() {
         .end(function(err, res) {
           assertError(err);
           assertRes(res, false);
+          done();
+        });
+    });
+  });
+
+  describe('global', function() {
+    it('manifest', function(done) {
+      request(globalNoCahceApp.listen())
+        .get('/cache.manifest')
+        .end(function(err, res) {
+          assertError(err);
+          assertRes(res, true);
+          done();
+        });
+    });
+
+    it('javascript', function(done) {
+      request(globalNoCahceApp.listen())
+        .get('/index.js')
+        .end(function(err, res) {
+          assertError(err);
+          assertRes(res, true);
           done();
         });
     });

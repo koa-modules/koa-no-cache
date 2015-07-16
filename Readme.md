@@ -5,9 +5,11 @@
 [![Dependency status][david-img]][david-url]
 
 ### koa-no-cache
-no cache for some paths or types
+no cache for koa apps
 
 ### example
+
+#### Adding no cache header on some paths or types
 
 ```js
 var noCache = require('koa-no-cache'),
@@ -22,6 +24,19 @@ app.use(noCache({
 
 * [paths](https://github.com/pillarjs/path-to-regexp)
 * [types](https://github.com/jshttp/type-is)
+
+
+#### Adding no cache header globally
+
+```js
+var noCache = require('koa-no-cache'),
+  koa = require('koa'),
+  app = koa();
+
+app.use(noCache({
+  global: true
+}));
+```
 
 ### License
 MIT
