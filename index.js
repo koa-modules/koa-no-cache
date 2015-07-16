@@ -1,28 +1,41 @@
 'use strict';
 
-var pathToRegExp = require('path-to-regexp'),
-  typeis = require('type-is').is;
-
 module.exports = noCache;
+
+function setNoCacheHeaders(ctx) {
+  ctx.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+  ctx.set('Pragma', 'no-cache');
+  ctx.set('Expires', 0);
+}
 
 function noCache(options) {
   options = options || {};
   var paths = options.paths || [],
     types = options.types || [],
+    global = options.global || false,
     config = options.config || {
       sensitive: true,
-      strict: true,
+      strict: true
     };
 
-  return function * noCache(next) {
-    yield * next;
+  if (options.global) {
+    return function * noCache(next) {
+      yield * next;
+      setNoCacheHeaders(this);
+    };
+  } else {
+    // only load modules if needed
+    var pathToRegExp = require('path-to-regexp'),
+      typeis = require('type-is').is;
 
-    if (typeis(this.type, types) || match(this.path)) {
-      this.set('Cache-Control', 'no-store, no-cache, must-revalidate');
-      this.set('Pragma', 'no-cache');
-      this.set('Expires', 0);
-    }
-  };
+    return function * noCache(next) {
+      yield * next;
+
+      if (typeis(this.type, types) || match(this.path)) {
+        setNoCacheHeaders(this);
+      }
+    };
+  }
 
   function match(path) {
     for (var i = 0; i < paths.length; i++) {
