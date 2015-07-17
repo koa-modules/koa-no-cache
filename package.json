@@ -3,18 +3,12 @@
   "version": "1.0.0",
   "description": "no cache for some paths or types",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "test": "mocha --harmony -R spec -t 500 test/*.js",
     "test-cov": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -R dot -t 500 test/*.js",
     "test-travis": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha --report lcovonly -- -R dot -t 500 test/*.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/coderhaoxin/koa-no-cache.git"
-  },
+  "repository": "coderhaoxin/koa-no-cache",
   "keywords": [
     "no-cache",
     "cache",
@@ -23,20 +17,16 @@
   ],
   "author": "haoxin",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/coderhaoxin/koa-no-cache/issues"
-  },
-  "homepage": "https://github.com/coderhaoxin/koa-no-cache",
   "devDependencies": {
     "istanbul-harmony": "0",
     "koa": "*",
-    "koa-static-cache": "*",
+    "koa-static-cache": "3",
     "mocha": "2",
-    "supertest": "0"
+    "supertest": "1"
   },
   "dependencies": {
     "path-to-regexp": "1",
-    "type-is": "^1.5.3"
+    "type-is": "1"
   },
   "files": [
     "index.js"

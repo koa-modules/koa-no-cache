@@ -1,13 +1,14 @@
 'use strict';
 
-var serve = require('koa-static-cache'),
-  request = require('supertest'),
-  assert = require('assert'),
-  equal = assert.deepEqual,
-  noCache = require('..'),
-  koa = require('koa'),
-  app = koa(),
-  globalNoCahceApp = koa();
+const serve = require('koa-static-cache');
+const request = require('supertest');
+const assert = require('assert');
+const equal = assert.deepEqual;
+const noCache = require('..');
+const koa = require('koa');
+
+const globalNoCacheApp = koa();
+const app = koa();
 
 describe('# koa-no-cache', function() {
   app.use(noCache({
@@ -15,15 +16,15 @@ describe('# koa-no-cache', function() {
     types: ['manifest']
   }));
   app.use(serve('test'));
-  app.use(function * () {
+  app.use(function* () {
     this.body = 'test';
   });
 
-  globalNoCahceApp.use(noCache({
+  globalNoCacheApp.use(noCache({
     global: true
   }));
-  globalNoCahceApp.use(serve('test'));
-  globalNoCahceApp.use(function * () {
+  globalNoCacheApp.use(serve('test'));
+  globalNoCacheApp.use(function* () {
     this.body = 'test';
   });
 
@@ -83,7 +84,7 @@ describe('# koa-no-cache', function() {
 
   describe('global', function() {
     it('manifest', function(done) {
-      request(globalNoCahceApp.listen())
+      request(globalNoCacheApp.listen())
         .get('/cache.manifest')
         .end(function(err, res) {
           assertError(err);
@@ -93,7 +94,7 @@ describe('# koa-no-cache', function() {
     });
 
     it('javascript', function(done) {
-      request(globalNoCahceApp.listen())
+      request(globalNoCacheApp.listen())
         .get('/index.js')
         .end(function(err, res) {
           assertError(err);
@@ -103,7 +104,6 @@ describe('# koa-no-cache', function() {
     });
   });
 });
-
 
 function assertError(e) {
   if (e) console.error(e);

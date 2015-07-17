@@ -10,13 +10,14 @@ function setNoCacheHeaders(ctx) {
 
 function noCache(options) {
   options = options || {};
-  var paths = options.paths || [],
-    types = options.types || [],
-    global = options.global || false,
-    config = options.config || {
-      sensitive: true,
-      strict: true
-    };
+  options.global = !!options.global;
+
+  var paths = options.paths || [];
+  var types = options.types || [];
+  var config = options.config || {
+    sensitive: true,
+    strict: true
+  };
 
   if (options.global) {
     return function * noCache(next) {
@@ -25,8 +26,8 @@ function noCache(options) {
     };
   } else {
     // only load modules if needed
-    var pathToRegExp = require('path-to-regexp'),
-      typeis = require('type-is').is;
+    var pathToRegExp = require('path-to-regexp');
+    var typeis = require('type-is').is;
 
     return function * noCache(next) {
       yield * next;
