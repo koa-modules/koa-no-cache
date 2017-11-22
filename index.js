@@ -1,6 +1,7 @@
 'use strict';
 
-module.exports = noCache;
+const pathToRegExp = require('path-to-regexp');
+const typeis = require('type-is').is;
 
 function setNoCacheHeaders(ctx) {
   ctx.set('Cache-Control', 'no-store, no-cache, must-revalidate');
@@ -8,39 +9,31 @@ function setNoCacheHeaders(ctx) {
   ctx.set('Expires', 0);
 }
 
-function noCache(options) {
+module.exports = function noCache(options) {
   options = options || {};
-  options.global = !!options.global;
+  options.global = Boolean(options.global);
 
-  var paths = options.paths || [];
-  var types = options.types || [];
-  var config = options.config || {
+  const paths = options.paths || [];
+  const types = options.types || [];
+  const config = options.config || {
     sensitive: true,
     strict: true
   };
 
+  const pathsFinal = paths.map(path => pathToRegExp(path, [], config));
+
   if (options.global) {
-    return function * noCache(next) {
-      yield * next;
-      setNoCacheHeaders(this);
-    };
-  } else {
-    // only load modules if needed
-    var pathToRegExp = require('path-to-regexp');
-    var typeis = require('type-is').is;
-
-    return function * noCache(next) {
-      yield * next;
-
-      if (typeis(this.type, types) || match(this.path)) {
-        setNoCacheHeaders(this);
-      }
+    return async function noCacheForAll(ctx, next) {
+      await next();
+      setNoCacheHeaders(ctx);
     };
   }
 
-  function match(path) {
-    for (var i = 0; i < paths.length; i++) {
-      if (pathToRegExp(paths[i], [], config).exec(path)) return true;
+  // only load modules if needed
+  return async function noCache(ctx, next) {
+    await next();
+      if (typeis(ctx.type, types) || pathsFinal.some(pathFinal => pathFinal.exec(ctx.path))) {
+        setNoCacheHeaders(ctx);
     }
-  }
-}
+  };
+};
