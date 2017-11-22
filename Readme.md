@@ -13,8 +13,8 @@ no cache for koa apps
 
 ```js
 var noCache = require('koa-no-cache'),
-  koa = require('koa'),
-  app = koa();
+  Koa = require('koa'),
+  app = new Koa();
 
 app.use(noCache({
   paths: ['/users/(.*)'],
@@ -30,8 +30,8 @@ app.use(noCache({
 
 ```js
 var noCache = require('koa-no-cache'),
-  koa = require('koa'),
-  app = koa();
+  Koa = require('koa'),
+  app = new Koa();
 
 app.use(noCache({
   global: true
