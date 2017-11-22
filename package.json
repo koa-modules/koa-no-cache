@@ -4,11 +4,11 @@
   "description": "no cache for some paths or types",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --harmony -R spec -t 500 test/*.js",
-    "test-cov": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -R dot -t 500 test/*.js",
-    "test-travis": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha --report lcovonly -- -R dot -t 500 test/*.js"
+    "test": "mocha -R spec -t 500 test/*.js",
+    "test-cov": "istanbul cover node_modules/.bin/_mocha -- -R dot -t 500 test/*.js",
+    "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly -- -R dot -t 500 test/*.js"
   },
-  "repository": "coderhaoxin/koa-no-cache",
+  "repository": "koa-modules/koa-no-cache",
   "keywords": [
     "no-cache",
     "cache",
