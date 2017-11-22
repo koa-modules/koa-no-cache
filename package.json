@@ -19,7 +19,7 @@
   "license": "MIT",
   "devDependencies": {
     "istanbul-harmony": "0",
-    "koa": "*",
+    "koa": ">=2",
     "koa-static-cache": "3",
     "mocha": "2",
     "supertest": "1"

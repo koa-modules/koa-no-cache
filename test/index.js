@@ -5,10 +5,10 @@ const request = require('supertest');
 const assert = require('assert');
 const equal = assert.deepEqual;
 const noCache = require('..');
-const koa = require('koa');
+const Koa = require('koa');
 
-const globalNoCacheApp = koa();
-const app = koa();
+const globalNoCacheApp = new Koa();
+const app = new Koa();
 
 describe('# koa-no-cache', function() {
   app.use(noCache({
@@ -16,16 +16,16 @@ describe('# koa-no-cache', function() {
     types: ['manifest']
   }));
   app.use(serve('test'));
-  app.use(function* () {
-    this.body = 'test';
+  app.use(async (ctx) => {
+      ctx.body = 'test';
   });
 
   globalNoCacheApp.use(noCache({
     global: true
   }));
   globalNoCacheApp.use(serve('test'));
-  globalNoCacheApp.use(function* () {
-    this.body = 'test';
+  globalNoCacheApp.use(async (ctx) => {
+      ctx.body = 'test';
   });
 
   describe('types', function() {
