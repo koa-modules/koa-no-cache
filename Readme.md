@@ -1,44 +1,46 @@
+
 [![NPM version][npm-img]][npm-url]
 [![Build status][travis-img]][travis-url]
 [![Test coverage][coveralls-img]][coveralls-url]
 [![License][license-img]][license-url]
 [![Dependency status][david-img]][david-url]
 
-### koa-no-cache
+## koa-no-cache
+
 no cache for koa apps
 
-### example
+## example
 
-#### Adding no cache header on some paths or types
+### Adding no cache header on some paths or types
 
 ```js
-var noCache = require('koa-no-cache'),
-  Koa = require('koa'),
-  app = new Koa();
+const noCache = require('koa-no-cache')
+const Koa = require('koa')
+const app = new Koa()
 
 app.use(noCache({
   paths: ['/users/(.*)'],
   types: ['manifest']
-}));
+}))
 ```
 
 * [paths](https://github.com/pillarjs/path-to-regexp)
 * [types](https://github.com/jshttp/type-is)
 
 
-#### Adding no cache header globally
+### Adding no cache header globally
 
 ```js
-var noCache = require('koa-no-cache'),
-  Koa = require('koa'),
-  app = new Koa();
+const noCache = require('koa-no-cache')
+const Koa = require('koa')
+const app = new Koa()
 
 app.use(noCache({
   global: true
-}));
+}))
 ```
 
-### License
+## License
 MIT
 
 [npm-img]: https://img.shields.io/npm/v/koa-no-cache.svg?style=flat-square
