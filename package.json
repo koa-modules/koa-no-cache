@@ -18,6 +18,7 @@
   "author": "haoxin",
   "license": "MIT",
   "devDependencies": {
+    "eslint-config-ok": "github:haoxins/eslint-config",
     "istanbul": "^0.4.5",
     "koa": "^2.4.1",
     "koa-static-cache": "^5.1.1",
@@ -30,5 +31,10 @@
   },
   "files": [
     "index.js"
-  ]
+  ],
+  "eslintConfig": {
+    "extends": [
+      "ok"
+    ]
+  }
 }
